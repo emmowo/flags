@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "flags:flag_held",
+    "model": {
+      "type": "flags:flag_held"
+    }
+  }
+}

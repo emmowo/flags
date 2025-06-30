@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "flags_fabric",
+  "version": "${version}",
+  "name": "Flags (FABRIC)",
+  "description": "[Alpha] Adds customizable pride flags to minecraft!",
+  "authors": ["emmowo"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/flags/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.github.emmowo.flags_fabric.client.Flags_fabricDataGenerator"
+    ],
+    "client": [
+      "com.github.emmowo.flags_fabric.client.Flags_fabricClient"
+    ],
+    "main": [
+      "com.github.emmowo.flags_fabric.Flags_fabric"
+    ]
+  },
+  "mixins": [
+    "flags_fabric.mixins.json",
+    {
+      "config": "flags_fabric.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

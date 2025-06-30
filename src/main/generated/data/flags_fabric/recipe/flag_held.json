@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:string",
+    "minecraft:white_wool",
+    "minecraft:stick"
+  ],
+  "result": {
+    "count": 1,
+    "id": "flags:flag_held"
+  }
+}
