@@ -1,3 +1,4 @@
 {
-  "item.flags.flag_held": "Pride Flag"
+  "item.flags.flag_held": "Pride Flag",
+  "item.flags.flag_placed": "Placeable Pride Flag"
 }

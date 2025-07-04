@@ -30,6 +30,7 @@ public class FlagCraftingGen extends FabricRecipeProvider {
 
                 createShapeless(RecipeCategory.DECORATIONS, Flags_fabric.HELD_FLAG).input(Items.STRING).input(Items.WHITE_WOOL).input(Items.STICK).criterion(hasItem(Items.WHITE_WOOL),conditionsFromItem(Items.WHITE_WOOL)).offerTo(exporter);
 
+                createShapeless(RecipeCategory.DECORATIONS, Flags_fabric.block).input(Items.STRING).input(Items.WHITE_WOOL).input(Items.STICK).input(Items.STICK).criterion(hasItem(Items.WHITE_WOOL),conditionsFromItem(Items.WHITE_WOOL)).offerTo(exporter);
 
 
             }

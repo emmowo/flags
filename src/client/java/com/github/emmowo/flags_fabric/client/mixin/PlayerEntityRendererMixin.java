@@ -17,7 +17,7 @@ public class PlayerEntityRendererMixin {
 
     @Inject(method = "getArmPose(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;)Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;", at = @At("HEAD"), cancellable = true)
     private static void flagPoseWorkaround(PlayerEntity player, ItemStack stack, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir){
-        if (!player.handSwinging && stack.isOf(Flags_fabric.HELD_FLAG)) {
+        if (!player.handSwinging && stack.isOf(Flags_fabric.HELD_FLAG) || (!player.handSwinging && stack.isOf(Flags_fabric.block.asItem()))) {
             cir.setReturnValue(BipedEntityModel.ArmPose.TOOT_HORN);
         }
 

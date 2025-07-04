@@ -45,7 +45,7 @@ public class Flags_fabric implements ModInitializer {
     public static Item  HELD_FLAG = register(HELD_FLAG_ID.getPath(),FlagItem::new,new Item.Settings().fireproof().maxCount(1));//flags that are held by hand or worn by the player. Smaller than most of the other flags.
 
     //nonOpaque is required to prevent the flag mesh breaking stuff
-    public static Block block = register("flag_placed",FlagBlock::new,AbstractBlock.Settings.create().nonOpaque(),true);
+    public static Block block = register("flag_placed",FlagBlock::new,AbstractBlock.Settings.create().nonOpaque().notSolid(),true);
 
 
     public static final BlockEntityType<FlagBlockEntity> FLAG_BLOCK_ENT = registerBlockEnt("flag_block_ent", FabricBlockEntityTypeBuilder.create(FlagBlockEntity::new,Flags_fabric.block).build());
