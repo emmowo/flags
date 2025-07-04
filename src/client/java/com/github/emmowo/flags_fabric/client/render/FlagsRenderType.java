@@ -2,6 +2,7 @@ package com.github.emmowo.flags_fabric.client.render;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormats;
@@ -52,7 +53,11 @@ public class FlagsRenderType {
      */
 
     // avoid using overlay while still having the better entity shader lighting.
-    public static final RenderPipeline FLAG_STATIC_SHADERS = register(RenderPipeline.builder(FLAG_SNIPPET).withVertexShader("core/entity").withLocation("pipeline/entity_solid").withCull(false).build());
+
+    /** OLD METHOD, FASTER BUT BREAKS IRIS  */
+    /** public static final RenderPipeline FLAG_STATIC_SHADERS = register(RenderPipeline.builder(FLAG_SNIPPET).withVertexShader("core/entity").withLocation("pipeline/entity_solid").withCull(false).build());
+
+
 
     public static final Function<RenderPhase.Texture,RenderLayer> FLAG_STATIC_LAYER = (texture ->  RenderLayer.of(
             "flags",
@@ -62,8 +67,28 @@ public class FlagsRenderType {
             FLAG_STATIC_SHADERS,
             RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).texture(texture).overlay(RenderPhase.DISABLE_OVERLAY_COLOR).build(true)
     ));
-    
 
+     */
+
+
+
+    public static final Function<RenderPhase.Texture,RenderLayer> FLAG_STATIC_LAYER = (texture ->  RenderLayer.of(
+            "flags",
+            1536,
+            true,
+            false,
+            ENTITY_CUTOUT_NO_CULL,
+            RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
+    ));
+
+    public static final Function<RenderPhase.Texture,RenderLayer> FLAG_FALLBACK = (texture ->  RenderLayer.of(
+            "flags",
+            1536,
+            true,
+            false,
+            ENTITY_CUTOUT_NO_CULL,
+            RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
+    ));
 
 
 }
