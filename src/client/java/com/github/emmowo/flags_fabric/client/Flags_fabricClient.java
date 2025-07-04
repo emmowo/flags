@@ -2,11 +2,13 @@ package com.github.emmowo.flags_fabric.client;
 
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
+import com.github.emmowo.flags_fabric.client.render.FlagBlockEntityRenderer;
 import com.github.emmowo.flags_fabric.client.render.FlagModelRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
 import net.minecraft.util.Identifier;
 
@@ -15,7 +17,7 @@ import java.io.IOException;
 
 public class Flags_fabricClient implements ClientModInitializer {
 
-    public static final Identifier FLAG = Identifier.of("flags","obj/flag_test.obj");
+    public static final Identifier FLAG_HANDHELD_OBJ = Identifier.of("flags","obj/flag_test.obj");
 
     static boolean has_initialized = false;
 
@@ -37,7 +39,7 @@ public class Flags_fabricClient implements ClientModInitializer {
                 BufferedReader r;
 
                 try {
-                    r = MinecraftClient.getInstance().getResourceManager().openAsReader(FLAG);
+                    r = MinecraftClient.getInstance().getResourceManager().openAsReader(FLAG_HANDHELD_OBJ);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -52,6 +54,8 @@ public class Flags_fabricClient implements ClientModInitializer {
 
         });
 
+
+        BlockEntityRendererFactories.register(Flags_fabric.FLAG_BLOCK_ENT, FlagBlockEntityRenderer::new);
 
 
     }

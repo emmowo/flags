@@ -4,8 +4,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.*;
@@ -35,9 +37,15 @@ public class Flags_fabric implements ModInitializer {
     // should I add a coloured rarity based on pride?
     public static Item  HELD_FLAG = register(HELD_FLAG_ID.getPath(),FlagItem::new,new Item.Settings().fireproof().maxCount(1));//flags that are held by hand or worn by the player. Smaller than most of the other flags.
 
-    //current implementation is nonfunctional
-    //public static Block block = register("hflag2",Block::new,AbstractBlock.Settings.create(),true);
+    //nonOpaque is required to prevent the flag mesh breaking stuff
+    public static Block block = register("flag_placed",FlagBlock::new,AbstractBlock.Settings.create().nonOpaque(),true);
 
+
+    public static final BlockEntityType<FlagBlockEntity> FLAG_BLOCK_ENT = registerBlockEnt("flag_block_ent", FabricBlockEntityTypeBuilder.create(FlagBlockEntity::new,Flags_fabric.block).build());
+
+    public static <T extends BlockEntityType<?>> T registerBlockEnt(String path, T blockEntityType) {
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(NAMESPACE, path), blockEntityType);
+    }
 
 
     public static Item register(String path, Function<Item.Settings, Item> factory, Item.Settings settings) {
