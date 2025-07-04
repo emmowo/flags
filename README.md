@@ -1,7 +1,3 @@
-An OBJ importer library that doesn't eve-
+Modrinth Page: [https://modrinth.com/mod/pride!](https://modrinth.com/project/FigEH5fd)
 
-I mean- a pride flag mod!
-
-Likely will only ever contain built-in pride flags to prevent abuse.
-
-Suggestions are welcome!
+[> suggest a flag or feature! <](https://github.com/emmowo/flags/issues/new/choose)
