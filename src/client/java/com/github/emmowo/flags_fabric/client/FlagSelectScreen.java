@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.RotationAxis;
 import java.util.ArrayList;
@@ -231,6 +232,9 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
            item.applyChanges(item.getComponentChanges());
            var packet = new Flags_fabric.UpdateLorePacketC2S(item.get(DataComponentTypes.LORE));
             ClientPlayNetworking.send(packet);
+
+            client.player.playSound(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT,0.7f,1.0f);
+
         }
 
         @Override
