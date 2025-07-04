@@ -46,7 +46,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
         var entry = matrices.peek();
 
-        VertexConsumer consumer;
+        //VertexConsumer consumer;
 
 
 

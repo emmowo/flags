@@ -19,7 +19,7 @@ public class Flags_fabricClient implements ClientModInitializer {
 
     static boolean has_initialized = false;
 
-    public static BasicOBJParser.OBJModel flag ;
+    public static BasicOBJParser.OBJModel flag;
 
 
     @Override

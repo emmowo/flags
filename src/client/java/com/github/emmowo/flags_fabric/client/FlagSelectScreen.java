@@ -4,9 +4,16 @@ import com.github.emmowo.flags_fabric.FlagSelectScreenHandler;
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.ScreenRect;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
+import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.tooltip.TooltipState;
+import net.minecraft.client.gui.tooltip.WidgetTooltipPositioner;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -58,10 +65,12 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         FLAG_G.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("gay_flag"))));
         FLAG_B.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("bi_flag"))));
         FLAG_T.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("trans_flag"))));
+        FLAG_NB.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("nonbinary_flag"))));
         FLAG_I.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("intersex_flag"))));
         FLAG_A_S.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("asexual_flag"))));
         FLAG_A_R.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("aromantic_flag"))));
         FLAG_PROGRESS.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("progress_flag"))));
+        FLAG_PAN.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("pan_flag"))));
 
 
 
@@ -80,6 +89,8 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
     private static ItemStack FLAG_G = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_B = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_T = new ItemStack(Flags_fabric.HELD_FLAG);
+    private static ItemStack FLAG_NB = new ItemStack(Flags_fabric.HELD_FLAG);
+    private static ItemStack FLAG_PAN = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_I = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_A_S = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_A_R = new ItemStack(Flags_fabric.HELD_FLAG);
@@ -108,7 +119,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         int j = (this.height - this.backgroundHeight) / 2;
         //context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 256);
 
-        context.fillGradient(i,j + 85,i + 47 + 26 + 66, j + 109 + 4, 0xAACCCCCC,0x00000000);
+        context.fillGradient(i,j + 85,i + 47 + 26 + 66 + 44, j + 109 + 4 + 66, 0xAACCCCCC,0x00000000);
 
         context.getMatrices().push();
         context.getMatrices().translate(0.0F, 0.0F, 1000.0F);
@@ -121,27 +132,45 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         List<ItemButtonWidget> flagList = new ArrayList<>();
 
-        flagList.add(new ItemButtonWidget(FLAG_L,i + 20, j + 109));
+        flagList.add(new ItemButtonWidget(FLAG_L,i + 20, j + 109, Text.of("Lesbian")));
 
         context.drawText(client.textRenderer,Text.of("G"),i + 47, TEXT_HEIGHT,0xFFFFFF,true);
 
 
-        flagList.add(new ItemButtonWidget(FLAG_G, i + 41, j + 109));
+        flagList.add(new ItemButtonWidget(FLAG_G, i + 41, j + 109, Text.of("Gay")));
 
         context.drawText(client.textRenderer,Text.of("B"),i + 47 + 22, TEXT_HEIGHT,0xFFFFFF,true);
 
 
-        flagList.add(new ItemButtonWidget(FLAG_B, i + 41 + 22, j + 109));
+        flagList.add(new ItemButtonWidget(FLAG_B, i + 41 + 22, j + 109,Text.of("Bisexual")));
 
         context.drawText(client.textRenderer,Text.of("T"),i + 47 + 44, TEXT_HEIGHT,0xFFFFFF,true);
 
 
-        flagList.add(new ItemButtonWidget(FLAG_T, i + 41 + 44, j + 109));
+        flagList.add(new ItemButtonWidget(FLAG_T, i + 41 + 44, j + 109,Text.of("Transgender")));
 
         context.drawText(client.textRenderer,Text.of("I"),i + 47 + 66, TEXT_HEIGHT,0xFFFFFF,true);
 
 
-        flagList.add(new ItemButtonWidget(FLAG_I, i + 41 + 66, j + 109));
+        flagList.add(new ItemButtonWidget(FLAG_I, i + 41 + 66, j + 109,Text.of("Intersex")));
+
+        context.drawText(client.textRenderer,Text.of("A"),i + 47 + 66 + 22, TEXT_HEIGHT,0xFFFFFF,true);
+
+        flagList.add(new ItemButtonWidget(FLAG_A_S, i + 41 + 66 + 22, j + 109,Text.of("Asexual")));
+
+        context.drawText(client.textRenderer,Text.of("+"),i + 47 + 66 + 44, TEXT_HEIGHT,0xFFFFFF,true);
+
+        flagList.add(new ItemButtonWidget(FLAG_PAN, i + 41 + 66 + 44, j + 109,Text.of("Pansexual")));
+
+        // row 2
+
+        flagList.add(new ItemButtonWidget(FLAG_PROGRESS,i + 41, j + 109 + 32, Text.of("Progress Pride") ));
+
+        flagList.add(new ItemButtonWidget(FLAG_NB, i + 41 + 44, j + 109 + 32,Text.of("Nonbinary")));
+
+        flagList.add(new ItemButtonWidget(FLAG_A_R, i + 41 + 66 + 22, j + 109 + 32,Text.of("Aromantic")));
+
+
 
 
         for (ItemButtonWidget widget : flagList){
@@ -161,12 +190,14 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         private ItemStack item;
 
+
+        TooltipState state = new TooltipState();
+
         int i = 0;
 
-        public ItemButtonWidget(ItemStack itemStack, int x, int y) {
+        public ItemButtonWidget(ItemStack itemStack, int x, int y, Text tooltipPass) {
             super(x, y, 16,32, Text.of("test"));
             this.item = itemStack;
-            //buttons.add(this);
             addSelectableChild(this);
             addButton(this);
             idx++;
@@ -188,6 +219,9 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
             context.getMatrices().pop();
 
             context.fillGradient(this.getX(),this.getY(),this.getX() + this.getWidth(), this.getY() + this.getHeight(),0xAACCCCCC,0x00000000); // eyeballing ARGB? Couldn't be me!
+
+
+
 
         }
 
