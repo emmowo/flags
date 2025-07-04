@@ -1,9 +1,12 @@
 package com.github.emmowo.flags_fabric.client;
 
+import com.github.emmowo.flags_fabric.FlagBlock;
+import com.github.emmowo.flags_fabric.FlagBlockEntity;
 import com.github.emmowo.flags_fabric.FlagSelectScreenHandler;
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ScreenRect;
@@ -23,7 +26,12 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -231,9 +239,37 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
            invRef.getSelectedStack().apply(DataComponentTypes.LORE,LoreComponent.DEFAULT,lore -> item.get(DataComponentTypes.LORE)); // set flag lore to reference (therefore changing the colour)
            item.applyChanges(item.getComponentChanges());
            var packet = new Flags_fabric.UpdateLorePacketC2S(item.get(DataComponentTypes.LORE));
-            ClientPlayNetworking.send(packet);
+           ClientPlayNetworking.send(packet);
 
-            client.player.playSound(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT,0.7f,1.0f);
+           client.player.playSound(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT,0.7f,1.0f);
+
+
+           if(FlagBlock.LAST_KNOWN_POS != null) {
+               handlePossibleBlock(client.world, FlagBlock.LAST_KNOWN_POS, item.get(DataComponentTypes.LORE).lines().getFirst().getString());
+           }
+        }
+
+        void handlePossibleBlock(World world, BlockPos pos,String text){
+
+
+            var get = world.getBlockEntity(pos);
+
+
+
+            if(get != null){
+                System.out.println("wghuir");
+
+                if(get instanceof FlagBlockEntity blockEntity){
+                   //blockEntity.flagtype = text;
+                   System.out.println("wehugghuir");
+                   ClientPlayNetworking.send(new Flags_fabric.UpdateFlagTypePacketC2S(text,pos));
+                }
+
+            }
+
+            FlagBlock.LAST_KNOWN_POS = null;
+
+            close(); // otherwise the flag won't be able to change anymore.
 
         }
 

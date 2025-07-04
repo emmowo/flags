@@ -27,7 +27,7 @@ public class FlagItem extends Item {
     @Nullable
     protected NamedScreenHandlerFactory createScreenHandlerFactory( World world, BlockPos pos) {
         return new SimpleNamedScreenHandlerFactory(
-                (syncId, inventory, player) -> new FlagSelectScreenHandler(syncId, inventory/*, ScreenHandlerContext.create(world, pos)*/), Text.of("a")
+                (syncId, inventory, player) -> new FlagSelectScreenHandler(syncId, inventory, pos), Text.of("a")
         );
     }
 

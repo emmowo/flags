@@ -15,9 +15,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.predicate.component.ComponentPredicateTypes;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.TriState;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -53,7 +56,48 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
          */
 
+        var dir = entity.getCachedState().get(Properties.HORIZONTAL_FACING);
+
+
+        var p = entity.getPos();
+
+        switch (dir){
+            case NORTH -> {
+                // do nothing, zero degrees of rotation from default.
+                break;
+            }
+
+            case EAST -> {
+
+                matrices.translate(1.0F, 0.0, 0.0F);
+
+
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(270f),0,0,0); // I had to flip this.
+
+
+                break;
+            }
+
+            case SOUTH -> {
+                matrices.translate(1.0F, 0.0, 1.0F);
+
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180f),0,0,0);
+                break;
+            }
+
+            case WEST -> {
+
+                matrices.translate(0.0F, 0.0, 1.0F);
+
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90f),0,0,0);
+                break;
+
+            }
+
+        }
+
         var entry = matrices.peek();
+
 
         //VertexConsumer consumer;
 
@@ -96,7 +140,7 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
                 //var t = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL);
 
-                RenderLayer layer = determineLayer(/*truedata*/ "test"); //FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + truedata + ".png"), TriState.FALSE, true));
+                RenderLayer layer = determineLayer(entity.flagtype); //FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + truedata + ".png"), TriState.FALSE, true));
 
                 var t = vertexConsumers.getBuffer(layer);
 

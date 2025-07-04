@@ -1,5 +1,6 @@
 package com.github.emmowo.flags_fabric;
 
+import com.mojang.serialization.Codec;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -7,12 +8,15 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.*;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.BrandCustomPayload;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -20,8 +24,11 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Function;
 
@@ -94,6 +101,31 @@ public class Flags_fabric implements ModInitializer {
         }
     }
 
+    public record UpdateFlagTypePacketC2S(String type, BlockPos bpos) implements CustomPayload {
+        public static final Identifier FLAGTYPE_UPDATE_ID = Identifier.of(NAMESPACE,"flag_type_update");
+        public static CustomPayload.Id<UpdateFlagTypePacketC2S> ID = new CustomPayload.Id<>(FLAGTYPE_UPDATE_ID);
+        public static final PacketCodec<PacketByteBuf, UpdateFlagTypePacketC2S> CODEC = CustomPayload.codecOf(UpdateFlagTypePacketC2S::write, UpdateFlagTypePacketC2S::new);;
+
+        private UpdateFlagTypePacketC2S(PacketByteBuf buf){
+            this(
+                buf.readString(),
+                buf.readBlockPos()
+            );
+        }
+
+        private void write(PacketByteBuf buf) {
+            buf.writeString(this.type);
+            buf.writeBlockPos(this.bpos);
+
+        }
+
+
+        @Override
+        public Id<UpdateFlagTypePacketC2S> getId() {
+            return ID;
+        }
+    }
+
 
     @Override
     public void onInitialize() {
@@ -104,6 +136,18 @@ public class Flags_fabric implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(UpdateLorePacketC2S.ID, (payload,context) ->{
             context.player().getInventory().getSelectedStack().set(DataComponentTypes.LORE,payload.component);
+        });
+
+
+        PayloadTypeRegistry.playC2S().register(UpdateFlagTypePacketC2S.ID,UpdateFlagTypePacketC2S.CODEC);
+
+
+        ServerPlayNetworking.registerGlobalReceiver(UpdateFlagTypePacketC2S.ID, (payload,context) ->{
+            if(context.player().getWorld().getBlockEntity(payload.bpos) instanceof FlagBlockEntity flagBlockEntity){
+                flagBlockEntity.flagtype = payload.type;
+                flagBlockEntity.markDirty();
+                context.player().getWorld().updateListeners(payload.bpos,block.getDefaultState(),block.getDefaultState(),0);
+            }
         });
 
     }
