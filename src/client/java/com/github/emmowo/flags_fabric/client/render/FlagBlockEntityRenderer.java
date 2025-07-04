@@ -60,7 +60,7 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
         light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up());
 
-        var flagmodel = Flags_fabricClient.flag;
+        var flagmodel = Flags_fabricClient.flag_placed;
         for(BasicOBJParser.OBJSubObject o : flagmodel.objects){
             if(!Objects.equals(o.name, "flag")){ // WARNING: animated part must be named "flag". All parts of the model are presumed to be quads.
 

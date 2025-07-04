@@ -19,9 +19,14 @@ public class Flags_fabricClient implements ClientModInitializer {
 
     public static final Identifier FLAG_HANDHELD_OBJ = Identifier.of("flags","obj/flag_test.obj");
 
+    public static final Identifier FLAG_PLACED_OBJ = Identifier.of("flags","obj/flag_placed.obj");
+
+
     static boolean has_initialized = false;
 
     public static BasicOBJParser.OBJModel flag;
+
+    public static BasicOBJParser.OBJModel flag_placed;
 
 
     @Override
@@ -47,6 +52,21 @@ public class Flags_fabricClient implements ClientModInitializer {
                 BasicOBJParser parser = new BasicOBJParser();
 
                 flag = parser.parse(r);
+
+
+                BufferedReader r2;
+
+                try {
+                    r.close();
+
+                    r2 = MinecraftClient.getInstance().getResourceManager().openAsReader(FLAG_PLACED_OBJ);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                BasicOBJParser parser2 = new BasicOBJParser();
+
+                flag_placed = parser2.parse(r2);
 
 
 
