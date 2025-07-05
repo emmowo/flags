@@ -194,7 +194,7 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
 
         v.x += (float) (Math.sin(((time + this.seed) * 0.001) + v.x + Math.cos(v.z + v.x + ((this.seed + time) * 0.001))) * 0.225 * v.z * v.z * (v.z * (MinecraftClient.getInstance().world.isRaining() ? 1.2 : 1.0)  ));
-        v.y += (float) (Math.sin(((time + this.seed) * 0.001) + v.y + Math.cos(v.z + v.y + ((this.seed + time) * 0.001))) * 0.15 * v.z * (1.25 * v.z));
+        v.y += (float) (Math.sin(((time + this.seed) * 0.002) + v.y + Math.cos(v.z + v.y + ((this.seed + time) * 0.001))) * 0.15 * v.z * ((v.z + 1) * 0.5) );
         //v.z += (float) Math.sin(time + v.z);
 
         return v;
