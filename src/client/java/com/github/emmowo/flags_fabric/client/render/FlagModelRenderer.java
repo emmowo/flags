@@ -151,7 +151,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
 
 
-        v.x += (float) (Math.sin(((time + this.seed) * 0.001) + v.x + Math.cos(v.z + v.x + ((this.seed + time) * 0.001))) * 0.15 * v.z * v.z * (v.z * (MinecraftClient.getInstance().world.isRaining() ? 2.0 : 1.0)  ));
+        v.x += (float) (Math.sin(((time + this.seed) * 0.001) + v.x + Math.cos(v.z + v.x + ((this.seed + time) * 0.001))) * 0.15 * v.z * v.z * (v.z * (MinecraftClient.getInstance().world.isRaining() ? 1.2 : 1.0)  ));
         v.y += (float) (Math.sin(((time + this.seed) * 0.001) + v.y + Math.cos(v.z + v.y + ((this.seed + time) * 0.001))) * 0.075 * v.z * v.z);
 
         //v.z += (float) Math.sin(time + v.z);
