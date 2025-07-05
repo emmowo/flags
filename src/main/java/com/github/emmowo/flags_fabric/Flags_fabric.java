@@ -131,6 +131,9 @@ public class Flags_fabric implements ModInitializer {
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register((itemGroup) -> itemGroup.add(Flags_fabric.HELD_FLAG));
 
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register((itemGroup) -> itemGroup.add(Flags_fabric.block.asItem()));
+
+
         PayloadTypeRegistry.playC2S().register(UpdateLorePacketC2S.ID,UpdateLorePacketC2S.CODEC);
 
 
