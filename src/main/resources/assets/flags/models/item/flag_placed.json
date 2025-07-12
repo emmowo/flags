@@ -1,0 +1,40 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "front",
+  "textures": {
+    "particle": "minecraft:block/white_wool"
+  },
+  "display": {
+    "gui": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        -6.5,
+        -5,
+        0
+      ],
+      "scale": [
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  }
+
+
+}

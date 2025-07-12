@@ -8,8 +8,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.model.LoadedEntityModels;
-import net.minecraft.client.render.item.model.special.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
@@ -21,18 +19,21 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integer>> {
+public class LegacyFlagModelRenderer{
 
+    public static LegacyFlagModelRenderer INSTANCE = new LegacyFlagModelRenderer();
+
+    ModelTransformationMode currentMode;
 
     // creates a unique wind effect per-flag to fake realism.
     protected float seed;
 
-
-    @Override
     public void render(Pair<String,Integer> data, ModelTransformationMode modelTransformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
 
 
+        currentMode = modelTransformationMode;
 
         matrices.push();
 
@@ -129,10 +130,22 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     }
 
-    @Override
-    public @Nullable Pair<String,Integer> getData(ItemStack stack) {
+    public @Nullable Pair<String,Integer> getData(ItemStack stack,ModelTransformationMode mode) {
         if(!stack.get(DataComponentTypes.LORE).lines().isEmpty()) {
-            return new Pair<>(stack.get(DataComponentTypes.LORE).lines().getFirst().getString(),stack.hashCode()); // ensure more-unique values
+
+            var code = stack.get(DataComponentTypes.DAMAGE);
+
+            if(code == null){
+                stack.set(DataComponentTypes.DAMAGE, ThreadLocalRandom.current().nextInt(300,5000));
+                code = stack.get(DataComponentTypes.DAMAGE);
+            }
+
+            if(mode == ModelTransformationMode.GROUND){
+                code = 5; // I feel like nobody will notice this anyways.
+            }
+
+
+            return new Pair<>(stack.get(DataComponentTypes.LORE).lines().getFirst().getString(),code); // ensure more-unique values
         }else {
             return new Pair<>("clear",0);
         }
@@ -160,20 +173,5 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
     }
 
 
-    @Environment(EnvType.CLIENT)
-    public record Unbaked() implements SpecialModelRenderer.Unbaked {
-        public static final FlagModelRenderer.Unbaked INSTANCE = new FlagModelRenderer.Unbaked();
-        public static final MapCodec<FlagModelRenderer.Unbaked> CODEC = MapCodec.unit(INSTANCE);
-
-        @Override
-        public MapCodec<FlagModelRenderer.Unbaked> getCodec() {
-            return CODEC;
-        }
-
-        @Override
-        public SpecialModelRenderer<?> bake(LoadedEntityModels entityModels) {
-            return new FlagModelRenderer();
-        }
-    }
 
 }
