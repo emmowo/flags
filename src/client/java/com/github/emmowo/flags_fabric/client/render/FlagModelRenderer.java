@@ -35,7 +35,6 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
     public void render(Pair<String,Integer> data, ItemDisplayContext displayContext, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
 
 
-
         matrices.push();
 
         var truedata = data.getLeft();

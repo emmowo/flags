@@ -1,9 +1,12 @@
 {
   "model": {
     "type": "minecraft:special",
-    "base": "flags:flag_held",
+    "base": "flags:item/flag_base",
     "model": {
-      "type": "flags:flag_held"
-    }
-  }
+      "type": "flags:flag_held",
+      "oversized_in_gui": true
+    },
+    "oversized_in_gui": true
+  },
+  "oversized_in_gui": true
 }
