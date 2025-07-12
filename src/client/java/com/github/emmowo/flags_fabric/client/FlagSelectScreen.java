@@ -131,43 +131,44 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         context.fillGradient(i,j + 85,i + 47 + 26 + 66 + 44, j + 109 + 4 + 66, 0xAACCCCCC,0x00000000);
 
+
         context.getMatrices().pushMatrix();
 
         int TEXT_HEIGHT = j + 90;
 
         //TODO: use translatable text instead, list flag full names in a neat way
-        context.drawText(client.textRenderer,Text.of("L"),i + 26, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("L"),i + 26, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
         List<ItemButtonWidget> flagList = new ArrayList<>();
 
         flagList.add(new ItemButtonWidget(FLAG_L,i + 20, j + 109, Text.of("Lesbian")));
 
-        context.drawText(client.textRenderer,Text.of("G"),i + 47, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("G"),i + 47, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
         flagList.add(new ItemButtonWidget(FLAG_G, i + 41, j + 109, Text.of("Gay")));
 
-        context.drawText(client.textRenderer,Text.of("B"),i + 47 + 22, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("B"),i + 47 + 22, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
         flagList.add(new ItemButtonWidget(FLAG_B, i + 41 + 22, j + 109,Text.of("Bisexual")));
 
-        context.drawText(client.textRenderer,Text.of("T"),i + 47 + 44, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("T"),i + 47 + 44, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
         flagList.add(new ItemButtonWidget(FLAG_T, i + 41 + 44, j + 109,Text.of("Transgender")));
 
-        context.drawText(client.textRenderer,Text.of("I"),i + 47 + 66, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("I"),i + 47 + 66, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
         flagList.add(new ItemButtonWidget(FLAG_I, i + 41 + 66, j + 109,Text.of("Intersex")));
 
-        context.drawText(client.textRenderer,Text.of("A"),i + 47 + 66 + 22, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("A"),i + 47 + 66 + 22, TEXT_HEIGHT,0xFFFFFFFF,true);
 
         flagList.add(new ItemButtonWidget(FLAG_A_S, i + 41 + 66 + 22, j + 109,Text.of("Asexual")));
 
-        context.drawText(client.textRenderer,Text.of("+"),i + 47 + 66 + 44, TEXT_HEIGHT,0xFFFFFF,true);
+        context.drawText(client.textRenderer,Text.of("+"),i + 47 + 66 + 44, TEXT_HEIGHT,0xFFFFFFFF,true);
 
         flagList.add(new ItemButtonWidget(FLAG_PAN, i + 41 + 66 + 44, j + 109,Text.of("Pansexual")));
 
