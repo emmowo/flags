@@ -256,11 +256,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
 
             if(get != null){
-                System.out.println("wghuir");
-
                 if(get instanceof FlagBlockEntity blockEntity){
-                   //blockEntity.flagtype = text;
-                   System.out.println("wehugghuir");
                    ClientPlayNetworking.send(new Flags_fabric.UpdateFlagTypePacketC2S(text,pos));
                 }
 
