@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integer>> {
 
@@ -120,12 +121,17 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     }
 
+    @Override
+    public void collectVertices(Set<Vector3f> vertices) {
+
+    }
+
     public RenderLayer determineLayer(String textureID, ItemDisplayContext ctx){
 
         if(ctx == ItemDisplayContext.GUI){
-            return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), TriState.FALSE, true));
+            return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), true));
         }else {
-            return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), TriState.FALSE, true));
+            return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), true));
         }
 
     }

@@ -31,6 +31,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
+import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,8 +131,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         context.fillGradient(i,j + 85,i + 47 + 26 + 66 + 44, j + 109 + 4 + 66, 0xAACCCCCC,0x00000000);
 
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0F, 0.0F, 1000.0F);
+        context.getMatrices().pushMatrix();
 
         int TEXT_HEIGHT = j + 90;
 
@@ -187,7 +187,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         }
 
 
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
 
 
 
@@ -216,16 +216,17 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         @Override
         protected void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
 
-            context.getMatrices().push();
+            context.getMatrices().pushMatrix();
 
-            context.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(25f));
 
-            context.getMatrices().translate(0,0,100);
+            context.getMatrices().rotateAbout(0,1,25f);
+
+            //context.getMatrices().translate(0,0,100);
 
             context.drawItem(item, this.getX() - 85, this.getY() + 18); // otherwise it gets from the screen? Also, Y is offset due to model's shape to make it align with the hitbox of the button.
 
 
-            context.getMatrices().pop();
+            context.getMatrices().popMatrix();
 
             context.fillGradient(this.getX(),this.getY(),this.getX() + this.getWidth(), this.getY() + this.getHeight(),0xAACCCCCC,0x00000000); // eyeballing ARGB? Couldn't be me!
 

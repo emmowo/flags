@@ -16,7 +16,7 @@ import static net.minecraft.client.gl.RenderPipelines.*;
 public class FlagsRenderType {
 
 
-    public static final RenderPhase.Texture TESTING_TEXTURE = new RenderPhase.Texture(Identifier.of("flags","textures/test.png"), TriState.FALSE,true);
+    public static final RenderPhase.Texture TESTING_TEXTURE = new RenderPhase.Texture(Identifier.of("flags","textures/test.png"),true);
 
 
     //TODO: re-implement noise sampling for wind AND entity motion later. Old impl didn't look good or work well at all.
@@ -27,12 +27,6 @@ public class FlagsRenderType {
 
 
 
-    public static final RenderPipeline.Snippet FLAG_SNIPPET = RenderPipeline.builder(MATRICES_COLOR_FOG_LIGHT_DIR_SNIPPET)
-            .withFragmentShader("core/entity")
-            .withSampler("Sampler0")
-            .withSampler("Sampler2")
-            .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
-            .buildSnippet();
 
 
 
