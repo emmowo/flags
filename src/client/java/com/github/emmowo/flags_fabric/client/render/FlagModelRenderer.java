@@ -123,16 +123,12 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
     @Override
     public void collectVertices(Set<Vector3f> vertices) {
 
-
-
-        //for (Vector3f vector3f : Flags_fabricClient.flag.verticiesList) {
-          //     vertices.add(vector3f);
-        //}
-
+        // this is required to render dropped items
         vertices.add(new Vector3f());
 
     }
 
+    // used for shader compat
     public RenderLayer determineLayer(String textureID, ItemDisplayContext ctx){
 
         if(ctx == ItemDisplayContext.GUI){
