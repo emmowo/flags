@@ -218,11 +218,10 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
             context.getMatrices().push();
 
-            context.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(25f));
 
             context.getMatrices().translate(0,0,100);
 
-            context.drawItem(item, this.getX() - 85, this.getY() + 18); // otherwise it gets from the screen? Also, Y is offset due to model's shape to make it align with the hitbox of the button.
+            context.drawItem(item, this.getX(), this.getY() ); // otherwise it gets from the screen? Also, Y is offset due to model's shape to make it align with the hitbox of the button.
 
 
             context.getMatrices().pop();
