@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.render.item.model.special.SpecialModelTypes;
 import net.minecraft.util.Identifier;
 
 import java.io.BufferedReader;
@@ -33,8 +32,6 @@ public class Flags_fabricClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         HandledScreens.register(Flags_fabric.SELECTOR_SCREEN_TYPE,FlagSelectScreen::new);
-
-        SpecialModelTypes.ID_MAPPER.put(Flags_fabric.HELD_FLAG_ID, FlagModelRenderer.Unbaked.CODEC);
 
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
 

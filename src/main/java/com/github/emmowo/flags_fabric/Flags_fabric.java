@@ -138,7 +138,7 @@ public class Flags_fabric implements ModInitializer {
 
 
         ServerPlayNetworking.registerGlobalReceiver(UpdateLorePacketC2S.ID, (payload,context) ->{
-            context.player().getInventory().getSelectedStack().set(DataComponentTypes.LORE,payload.component);
+            context.player().getInventory().getMainHandStack().set(DataComponentTypes.LORE,payload.component);
         });
 
 

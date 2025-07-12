@@ -2,11 +2,6 @@ package com.github.emmowo.flags_fabric;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BeesComponent;
-import net.minecraft.component.type.LoreComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -34,7 +29,7 @@ public class FlagBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
 
-        flagtype = nbt.getString("flagtype", "clear");
+        flagtype = nbt.getString("flagtype");
     }
 
     @Nullable

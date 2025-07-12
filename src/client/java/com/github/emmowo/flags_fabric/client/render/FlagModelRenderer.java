@@ -3,7 +3,6 @@ package com.github.emmowo.flags_fabric.client.render;
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.github.emmowo.flags_fabric.client.Flags_fabricClient;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,8 +12,8 @@ import net.minecraft.client.render.entity.model.LoadedEntityModels;
 import net.minecraft.client.render.item.model.special.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.TriState;
@@ -31,7 +30,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
 
     @Override
-    public void render(Pair<String,Integer> data, ItemDisplayContext displayContext, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
+    public void render(Pair<String,Integer> data, ModelTransformationMode modelTransformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
 
 
 
@@ -59,7 +58,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
                 //var t = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL);
 
 
-                RenderLayer layer =  determineLayer("test",displayContext); //FlagsRenderType.FLAG_STATIC_LAYER.apply(FlagsRenderType.TESTING_TEXTURE);
+                RenderLayer layer =  determineLayer("test",modelTransformationMode); //FlagsRenderType.FLAG_STATIC_LAYER.apply(FlagsRenderType.TESTING_TEXTURE);
 
                 var t = vertexConsumers.getBuffer(layer); // lazy fix since the lesbian flag has white for the pole colour
 
@@ -87,7 +86,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
                 //var t = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS,VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL);
 
-                RenderLayer layer = determineLayer(truedata,displayContext); //FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + truedata + ".png"), TriState.FALSE, true));
+                RenderLayer layer = determineLayer(truedata,modelTransformationMode); //FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + truedata + ".png"), TriState.FALSE, true));
 
                 var t = vertexConsumers.getBuffer(layer);
 
@@ -120,9 +119,9 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     }
 
-    public RenderLayer determineLayer(String textureID, ItemDisplayContext ctx){
+    public RenderLayer determineLayer(String textureID, ModelTransformationMode ctx){
 
-        if(ctx == ItemDisplayContext.GUI){
+        if(ctx == ModelTransformationMode.GUI){
             return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), TriState.FALSE, true));
         }else {
             return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), TriState.FALSE, true));

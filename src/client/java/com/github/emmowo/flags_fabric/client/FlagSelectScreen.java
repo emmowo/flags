@@ -235,7 +235,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         @Override
         public void onClick(double mouseX, double mouseY) {
-           invRef.getSelectedStack().apply(DataComponentTypes.LORE,LoreComponent.DEFAULT,lore -> item.get(DataComponentTypes.LORE)); // set flag lore to reference (therefore changing the colour)
+           invRef.getMainHandStack().apply(DataComponentTypes.LORE,LoreComponent.DEFAULT,lore -> item.get(DataComponentTypes.LORE)); // set flag lore to reference (therefore changing the colour)
            item.applyChanges(item.getComponentChanges());
            var packet = new Flags_fabric.UpdateLorePacketC2S(item.get(DataComponentTypes.LORE));
            ClientPlayNetworking.send(packet);

@@ -1,17 +1,14 @@
 package com.github.emmowo.flags_fabric.client.render;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TriState;
 
 import java.util.function.Function;
 
-import static net.minecraft.client.gl.RenderPipelines.*;
 
 public class FlagsRenderType {
 
@@ -27,12 +24,6 @@ public class FlagsRenderType {
 
 
 
-    public static final RenderPipeline.Snippet FLAG_SNIPPET = RenderPipeline.builder(MATRICES_COLOR_FOG_LIGHT_DIR_SNIPPET)
-            .withFragmentShader("core/entity")
-            .withSampler("Sampler0")
-            .withSampler("Sampler2")
-            .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
-            .buildSnippet();
 
 
 
@@ -74,20 +65,22 @@ public class FlagsRenderType {
 
     public static final Function<RenderPhase.Texture,RenderLayer> FLAG_STATIC_LAYER = (texture ->  RenderLayer.of(
             "flags",
+            VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+            VertexFormat.DrawMode.QUADS,
             1536,
             true,
             false,
-            ENTITY_CUTOUT_NO_CULL,
-            RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
+            RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).cull(RenderPhase.DISABLE_CULLING).program(RenderPhase.ENTITY_CUTOUT_NONULL_PROGRAM).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
     ));
 
     public static final Function<RenderPhase.Texture,RenderLayer> FLAG_FALLBACK = (texture ->  RenderLayer.of(
             "flags",
+            VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+            VertexFormat.DrawMode.QUADS,
             1536,
             true,
             false,
-            ENTITY_CUTOUT_NO_CULL,
-            RenderLayer.MultiPhaseParameters.builder().lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
+            RenderLayer.MultiPhaseParameters.builder().cull(RenderPhase.DISABLE_CULLING).lightmap(RenderLayer.ENABLE_LIGHTMAP).program(RenderPhase.ENTITY_CUTOUT_NONULL_PROGRAM).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).texture(texture).build(false)
     ));
 
 
