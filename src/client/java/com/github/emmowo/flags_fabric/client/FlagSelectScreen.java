@@ -230,7 +230,7 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
             //context.enableScissor(this.getX() - 32135,this.getY() - 32135,this.getX() + 1024051250,this.getY() + 159252198);
 
-            context.drawItem(item, this.getX() - 85, this.getY() + 18); // otherwise it gets from the screen? Also, Y is offset due to model's shape to make it align with the hitbox of the button.
+            context.drawItem(item, this.getX(), this.getY()); // otherwise it gets from the screen? Also, Y is offset due to model's shape to make it align with the hitbox of the button.
 
             //context.disableScissor();
 

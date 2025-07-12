@@ -21,6 +21,7 @@ import net.minecraft.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,7 +34,6 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     @Override
     public void render(Pair<String,Integer> data, ItemDisplayContext displayContext, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
-
 
         matrices.push();
 
@@ -122,6 +122,14 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     @Override
     public void collectVertices(Set<Vector3f> vertices) {
+
+
+
+        //for (Vector3f vector3f : Flags_fabricClient.flag.verticiesList) {
+          //     vertices.add(vector3f);
+        //}
+
+        vertices.add(new Vector3f());
 
     }
 
