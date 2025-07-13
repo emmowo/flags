@@ -4,6 +4,9 @@
   "package": "com.github.emmowo.flags_fabric.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ItemFrameEntityRendererMixin",
+    "ItemRenderStateAccessor",
+    "ItemRenderStateAccessor$LayerRenderStateAccessor",
     "PlayerEntityRendererMixin"
   ],
   "injectors": {

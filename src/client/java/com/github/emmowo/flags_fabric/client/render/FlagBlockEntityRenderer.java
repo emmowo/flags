@@ -34,6 +34,8 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
         // do nothing
     }
 
+    private WindProvider provider;
+
     protected float seed;
 
     @Override
@@ -45,6 +47,8 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
         matrices.push();
 
         var flagmodel = supplyFlagModel(entity.flagtype);
+
+
 
 
         //var truedata = data.getLeft();
@@ -169,6 +173,12 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
                 time = System.currentTimeMillis(); // keep time relatively the same between faces
 
+                if(flagmodel == Flags_fabricClient.flag_placed){
+                    provider = new WindProvider.FloorFlagWindProvider(seed,time);
+                }else {
+                    provider = new WindProvider.SmallFlagWindProvider(seed,time);
+                }
+
 
                 for(var f: o.faces){
 
@@ -178,10 +188,10 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
                     consumer.vertex(entry,nudgeVector(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF);
                     consumer.vertex(entry,nudgeVector(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF);
  */
-                    t.vertex(entry,nudgeVector(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,nudgeVector(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,nudgeVector(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,nudgeVector(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry,provider.transformVertex(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry,provider.transformVertex(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry,provider.transformVertex(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry,provider.transformVertex(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
 
 
                 }
@@ -227,6 +237,7 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
     double time = System.currentTimeMillis();
 
+    /*
     public Vector3f nudgeVector(Vector3f i){
 
 
@@ -244,4 +255,5 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
         return v;
 
     }
+     */
 }
