@@ -17,7 +17,7 @@ public class FlagBlockEntity extends BlockEntity {
         super(Flags_fabric.FLAG_BLOCK_ENT, pos, state);
     }
 
-    public String flagtype = "clear";
+    public String flagtype = "clear, floor";
 
     @Override
     protected void writeData(WriteView view) {

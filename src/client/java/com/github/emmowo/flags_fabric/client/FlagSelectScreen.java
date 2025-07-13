@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
@@ -69,18 +70,30 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
     @Override
     protected void init() {
+
+        // 1.5 FLAG SPEC:
+        // Lore format: [Flag: {lesbian, gay, ..., inherit}], [Type: {small, floor, ... , inherit}]
+        // inherit will take whatever the flag was/is currently assigned to, or fallback to a default flag.
+
         // assign flag types correctly
         //TODO: add other generally accepted colour variants
-        FLAG_L.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("lesbian_flag"))));
-        FLAG_G.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("gay_flag"))));
-        FLAG_B.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("bi_flag"))));
-        FLAG_T.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("trans_flag"))));
-        FLAG_NB.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("nonbinary_flag"))));
-        FLAG_I.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("intersex_flag"))));
-        FLAG_A_S.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("asexual_flag"))));
-        FLAG_A_R.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("aromantic_flag"))));
-        FLAG_PROGRESS.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("progress_flag"))));
-        FLAG_PAN.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("pan_flag"))));
+        FLAG_L.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("lesbian_flag, inherit"))));
+        FLAG_G.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("gay_flag, inherit"))));
+        FLAG_B.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("bi_flag, inherit"))));
+        FLAG_T.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("trans_flag, inherit"))));
+        FLAG_NB.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("nonbinary_flag, inherit"))));
+        FLAG_I.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("intersex_flag, inherit"))));
+        FLAG_A_S.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("asexual_flag, inherit"))));
+        FLAG_A_R.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("aromantic_flag, inherit"))));
+        FLAG_PROGRESS.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("progress_flag, inherit"))));
+        FLAG_PAN.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("pan_flag, inherit"))));
+
+        // assign models
+
+        //TODO: randomly pick flags instead of... uhh...
+
+        FLAG_SMALL.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("inherit, small"))));
+        FLAG_FLOOR.set(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("inherit, floor"))));
 
 
 
@@ -106,6 +119,16 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
     private static ItemStack FLAG_A_R = new ItemStack(Flags_fabric.HELD_FLAG);
     private static ItemStack FLAG_PROGRESS = new ItemStack(Flags_fabric.HELD_FLAG);
 
+    // MODEL DEMO
+
+    // handheld, or handheld fused to wall
+    private static ItemStack FLAG_SMALL = new ItemStack(Flags_fabric.HELD_FLAG);
+    // the big floor-mount one
+    private static ItemStack FLAG_FLOOR = new ItemStack(Flags_fabric.HELD_FLAG);
+    // possible new flag, based off fences
+    private static ItemStack FLAG_FENCE = new ItemStack(Flags_fabric.HELD_FLAG);
+
+
 
 
 
@@ -129,10 +152,28 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         int j = (this.height - this.backgroundHeight) / 2;
         //context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 256);
 
-        context.fillGradient(i,j + 85,i + 47 + 26 + 66 + 44, j + 109 + 4 + 66, 0xAACCCCCC,0x00000000);
+        List<ItemButtonWidget> flagList = new ArrayList<>();
+
+        context.drawText(client.textRenderer,Text.of("Flag 3D Model"),i + 58, j,0xFFFFFFFF,true);
+
+        context.fillGradient(i,j + 74,i + 47 + 26 + 66 + 44, j + 109 + 4 + 44, 0xAACCCCCC,0x00000000);
 
 
         context.getMatrices().pushMatrix();
+
+
+
+        context.fillGradient(i,j,i + 47 + 26 + 66 + 44, j + 44, 0xAACCCCCC,0x00000000);
+
+        context.drawText(client.textRenderer,Text.of("Handheld-Style"),i, j + 44,0xFFFFFFFF,true);
+
+        flagList.add(new ItemButtonWidget(FLAG_SMALL,i + 24 + 8, j + 16, Text.of("Handheld-Style")));
+        context.drawText(client.textRenderer,Text.of("Floor-Attached"),i + 94, j + 44,0xFFFFFFFF,true);
+
+
+        flagList.add(new ItemButtonWidget(FLAG_FLOOR,i + 94 + 28, j + 16, Text.of("Floor-Attached")));
+
+
 
         int TEXT_HEIGHT = j + 90;
 
@@ -140,7 +181,6 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
         context.drawText(client.textRenderer,Text.of("L"),i + 26, TEXT_HEIGHT,0xFFFFFFFF,true);
 
 
-        List<ItemButtonWidget> flagList = new ArrayList<>();
 
         flagList.add(new ItemButtonWidget(FLAG_L,i + 20, j + 109, Text.of("Lesbian")));
 
@@ -238,17 +278,81 @@ public class FlagSelectScreen extends HandledScreen<FlagSelectScreenHandler> {
 
         @Override
         public void onClick(double mouseX, double mouseY) {
-           invRef.getSelectedStack().apply(DataComponentTypes.LORE,LoreComponent.DEFAULT,lore -> item.get(DataComponentTypes.LORE)); // set flag lore to reference (therefore changing the colour)
+           invRef.getSelectedStack().apply(DataComponentTypes.LORE,LoreComponent.DEFAULT,lore -> parseLore()); // set flag lore to reference (therefore changing the colour)
            item.applyChanges(item.getComponentChanges());
-           var packet = new Flags_fabric.UpdateLorePacketC2S(item.get(DataComponentTypes.LORE));
+           var packet = new Flags_fabric.UpdateLorePacketC2S(parseLore());
            ClientPlayNetworking.send(packet);
 
            client.player.playSound(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT,0.7f,1.0f);
 
 
            if(FlagBlock.LAST_KNOWN_POS != null) {
-               handlePossibleBlock(client.world, FlagBlock.LAST_KNOWN_POS, item.get(DataComponentTypes.LORE).lines().getFirst().getString());
+               handlePossibleBlock(client.world, FlagBlock.LAST_KNOWN_POS, parseLore().lines().getFirst().getString());
            }
+        }
+
+        public LoreComponent parseLore(){
+
+            String originalLore;
+
+            if(invRef.getSelectedStack().get(DataComponentTypes.LORE) != null) {
+                if(!invRef.getSelectedStack().get(DataComponentTypes.LORE).lines().isEmpty()) {
+                    originalLore = invRef.getSelectedStack().get(DataComponentTypes.LORE).lines().getFirst().getString();
+                }else {
+                    originalLore = "clear, small";
+                }
+            }else {
+                originalLore = "clear, small";
+            }
+
+            String[] ogloreComps = originalLore.split(",");
+
+
+            String computedPrideFlag = "";
+
+            String lore = item.get(DataComponentTypes.LORE).lines().getFirst().getString();
+
+            String[] loreComps = lore.split(",");
+
+            //System.err.println("lore: " + lore);
+
+            //System.err.println("og_lore: " + originalLore);
+
+
+            if(loreComps[0].contains("inherit")){
+                if(!ogloreComps[0].contains("inherit")){ // if the ORIGINAL lore doesn't have inherit!
+                    computedPrideFlag = ogloreComps[0] + ",";
+                }else {
+                    //System.err.println("uhh.... this item has invalid data. I'm just going to screw with your item data a bit to fix that!");
+                    computedPrideFlag = loreComps[0] + ",";
+
+                }
+            }else {
+                //System.err.println("overwriting.... (1)");
+                computedPrideFlag = loreComps[0] + ",";
+            }
+
+            if(loreComps[1].contains("inherit")){
+                if(ogloreComps.length >= 2){
+                    if(!ogloreComps[1].contains("inherit")){ // if the ORIGINAL lore doesn't have inherit!
+                        computedPrideFlag += ogloreComps[1];
+                    }else {
+                        computedPrideFlag += "small";
+                  //      System.err.println("this flag is inheriting from nothing, attempting fix...");
+
+                    }
+                }else {
+                    //System.err.println("lore for item is missing a required component! Let's make up something to fix it");
+                    computedPrideFlag += loreComps[1];
+                }
+            }else {
+                //System.err.println("overwriting.... (2)");
+                computedPrideFlag += loreComps[1];
+
+            }
+
+            return new LoreComponent(Collections.singletonList(Text.of(computedPrideFlag)));
+
         }
 
         void handlePossibleBlock(World world, BlockPos pos,String text){

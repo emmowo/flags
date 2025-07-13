@@ -20,7 +20,7 @@ public class FlagItem extends Item {
     public FlagItem(Settings settings) {
 
         super(settings);
-        settings.component(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("clear"))));
+        settings.component(DataComponentTypes.LORE,new LoreComponent(List.of(Text.of("clear, small"))));
 
     }
 

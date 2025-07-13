@@ -52,7 +52,9 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
 
 
-        var flagmodel = Flags_fabricClient.flag;
+        var flagmodel = supplyFlagModel(truedata);
+
+
         for(BasicOBJParser.OBJSubObject o : flagmodel.objects){
             if(!Objects.equals(o.name, "flag")){ // WARNING: animated part must be named "flag". All parts of the model are presumed to be quads.
 
@@ -120,6 +122,26 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     }
 
+    public BasicOBJParser.OBJModel supplyFlagModel(String lore){
+
+        var modelType = lore.split(",");
+
+        var exp  = "";
+
+        if(modelType.length < 2){
+            exp = "small";
+        }else {
+            exp = modelType[1].trim();
+        }
+
+        return switch (exp) {
+            case "small" -> Flags_fabricClient.flag;
+            case "floor" -> Flags_fabricClient.flag_placed;
+            default -> Flags_fabricClient.flag; // good for when a player downgrades a version
+        };
+
+    }
+
     @Override
     public void collectVertices(Set<Vector3f> vertices) {
 
@@ -131,10 +153,12 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
     // used for shader compat
     public RenderLayer determineLayer(String textureID, ItemDisplayContext ctx){
 
+        var flag_name = textureID.split(",")[0];
+
         if(ctx == ItemDisplayContext.GUI){
-            return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), true));
+            return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + flag_name + ".png"), true));
         }else {
-            return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"), true));
+            return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + flag_name + ".png"), true));
         }
 
     }

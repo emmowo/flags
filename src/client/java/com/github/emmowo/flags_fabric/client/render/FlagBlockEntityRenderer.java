@@ -44,6 +44,9 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
         matrices.push();
 
+        var flagmodel = supplyFlagModel(entity.flagtype);
+
+
         //var truedata = data.getLeft();
 
         //seed = data.getRight();
@@ -64,6 +67,11 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
         switch (dir){
             case NORTH -> {
                 // do nothing, zero degrees of rotation from default.
+
+                if(flagmodel == Flags_fabricClient.flag){ // push into a wall
+                    matrices.translate(0,0,0.5);
+                }
+
                 break;
             }
 
@@ -74,6 +82,10 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(270f),0,0,0); // I had to flip this.
 
+                if(flagmodel == Flags_fabricClient.flag){
+                    matrices.translate(0,0,0.5);
+                }
+
 
                 break;
             }
@@ -82,6 +94,11 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
                 matrices.translate(1.0F, 0.0, 1.0F);
 
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180f),0,0,0);
+
+                if(flagmodel == Flags_fabricClient.flag){
+                    matrices.translate(0,0,0.5);
+                }
+
                 break;
             }
 
@@ -90,6 +107,11 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
                 matrices.translate(0.0F, 0.0, 1.0F);
 
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90f),0,0,0);
+
+                if(flagmodel == Flags_fabricClient.flag){
+                    matrices.translate(0,0,0.5);
+                }
+
                 break;
 
             }
@@ -104,7 +126,6 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
         light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up());
 
-        var flagmodel = Flags_fabricClient.flag_placed;
         for(BasicOBJParser.OBJSubObject o : flagmodel.objects){
             if(!Objects.equals(o.name, "flag")){ // WARNING: animated part must be named "flag". All parts of the model are presumed to be quads.
 
@@ -173,9 +194,32 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
     }
 
+    public BasicOBJParser.OBJModel supplyFlagModel(String lore){
+
+        var modelType = lore.split(",");
+
+        var exp  = "";
+
+        if(modelType.length < 2){
+            exp = "small";
+        }else {
+            exp = modelType[1].trim();
+        }
+
+        return switch (exp) {
+            case "small" -> Flags_fabricClient.flag;
+            case "floor" -> Flags_fabricClient.flag_placed;
+            default -> Flags_fabricClient.flag; // good for when a player downgrades a version
+        };
+
+    }
+
     public RenderLayer determineLayer(String textureID){
 
-            return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + textureID + ".png"),true));
+        var flag_name = textureID.split(",")[0];
+
+
+        return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + flag_name + ".png"),true));
 
 
     }
