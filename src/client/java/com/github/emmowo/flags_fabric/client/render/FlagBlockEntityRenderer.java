@@ -3,6 +3,7 @@ package com.github.emmowo.flags_fabric.client.render;
 import com.github.emmowo.flags_fabric.FlagBlockEntity;
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.github.emmowo.flags_fabric.client.Flags_fabricClient;
+import com.github.emmowo.flags_fabric.client.PlaceholderUtils;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.WoodType;
@@ -33,8 +34,6 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
     public FlagBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         // do nothing
     }
-
-    private WindProvider provider;
 
     protected float seed;
 
@@ -173,6 +172,8 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
 
                 time = System.currentTimeMillis(); // keep time relatively the same between faces
 
+                WindProvider provider;
+
                 if(flagmodel == Flags_fabricClient.flag_placed){
                     provider = new WindProvider.FloorFlagWindProvider(seed,time);
                 }else {
@@ -188,10 +189,10 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
                     consumer.vertex(entry,nudgeVector(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF);
                     consumer.vertex(entry,nudgeVector(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF);
  */
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
 
 
                 }
@@ -227,6 +228,10 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
     public RenderLayer determineLayer(String textureID){
 
         var flag_name = textureID.split(",")[0];
+
+        if(flag_name.equals("inherit")){
+            flag_name = PlaceholderUtils.placeholderFlagGrabber();
+        }
 
 
         return FlagsRenderType.FLAG_STATIC_LAYER.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + flag_name + ".png"),true));

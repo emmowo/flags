@@ -3,7 +3,7 @@
   "id": "flags_fabric",
   "version": "${version}",
   "name": "Flags (FABRIC)",
-  "description": "[Alpha] Adds customizable pride flags to minecraft!",
+  "description": "Wavy, simulated pride flags!",
   "authors": ["emmowo"],
   "contact": {},
   "license": "MIT",

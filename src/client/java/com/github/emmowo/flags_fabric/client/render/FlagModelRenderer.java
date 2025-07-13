@@ -2,6 +2,7 @@ package com.github.emmowo.flags_fabric.client.render;
 
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.github.emmowo.flags_fabric.client.Flags_fabricClient;
+import com.github.emmowo.flags_fabric.client.PlaceholderUtils;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.serialization.MapCodec;
@@ -31,8 +32,6 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
     // creates a unique wind effect per-flag to fake realism.
     protected float seed;
-
-    private WindProvider provider;
 
 
     @Override
@@ -100,6 +99,7 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
 
                 time = System.currentTimeMillis(); // keep time relatively the same between faces
 
+                WindProvider provider;
                 if(flagmodel == Flags_fabricClient.flag_placed){
                     provider = new WindProvider.FloorFlagWindProvider(seed,time);
                 }else {
@@ -114,10 +114,10 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
                     consumer.vertex(entry,nudgeVector(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF);
                     consumer.vertex(entry,nudgeVector(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF);
  */
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
-                    t.vertex(entry,provider.transformVertex(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(0))).normal(entry,f.verticies_norm.get(0)).texture(f.vts.get(0).x,f.vts.get(0).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(1))).normal(entry,f.verticies_norm.get(1)).texture(f.vts.get(1).x,f.vts.get(1).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(2))).normal(entry,f.verticies_norm.get(2)).texture(f.vts.get(2).x,f.vts.get(2).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
+                    t.vertex(entry, provider.transformVertex(f.verticies.get(3))).normal(entry,f.verticies_norm.get(3)).texture(f.vts.get(3).x,f.vts.get(3).y).light(light).color(0xFFFFFFFF).overlay(OverlayTexture.DEFAULT_UV);
 
 
                 }
@@ -162,6 +162,11 @@ public class FlagModelRenderer implements SpecialModelRenderer<Pair<String,Integ
     public RenderLayer determineLayer(String textureID, ItemDisplayContext ctx){
 
         var flag_name = textureID.split(",")[0];
+
+        if(flag_name.equals("inherit")){
+            flag_name = PlaceholderUtils.placeholderFlagGrabber();
+        }
+
 
         if(ctx == ItemDisplayContext.GUI){
             return FlagsRenderType.FLAG_FALLBACK.apply(new RenderPhase.Texture(Identifier.of(Flags_fabric.NAMESPACE,"textures/" + flag_name + ".png"), true));
