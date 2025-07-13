@@ -1,8 +1,22 @@
 package com.github.emmowo.flags_fabric.client;
 
+import net.minecraft.util.Identifier;
+
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PlaceholderUtils {
+public class FlagsGlobals {
+
+    enum PrideOverrideState{
+        PLAYERS_WITHOUT_CAPES,
+        PLAYERS_WITH_CAPES,
+        ALL_PLAYERS,
+        MIGRATOR_CAPES,
+        MIGRATOR_AND_PLAYERS_WITHOUT_CAPES,
+    }
+
+    public static boolean PRIDE_OVERRIDE = true;
+
+    public static final Identifier PRIDE_CAPE = Identifier.of("flags","textures/cape/progresspride.png");
 
 
     private static long lastGenTime = 0;

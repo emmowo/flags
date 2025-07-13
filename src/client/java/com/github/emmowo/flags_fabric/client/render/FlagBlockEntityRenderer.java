@@ -3,30 +3,17 @@ package com.github.emmowo.flags_fabric.client.render;
 import com.github.emmowo.flags_fabric.FlagBlockEntity;
 import com.github.emmowo.flags_fabric.Flags_fabric;
 import com.github.emmowo.flags_fabric.client.Flags_fabricClient;
-import com.github.emmowo.flags_fabric.client.PlaceholderUtils;
+import com.github.emmowo.flags_fabric.client.FlagsGlobals;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.WoodType;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemDisplayContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.predicate.component.ComponentPredicateTypes;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
-import net.minecraft.util.TriState;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEntity> {
@@ -230,7 +217,7 @@ public class FlagBlockEntityRenderer implements BlockEntityRenderer<FlagBlockEnt
         var flag_name = textureID.split(",")[0];
 
         if(flag_name.equals("inherit")){
-            flag_name = PlaceholderUtils.placeholderFlagGrabber();
+            flag_name = FlagsGlobals.placeholderFlagGrabber();
         }
 
 
