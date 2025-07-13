@@ -1,19 +1,20 @@
 package com.github.emmowo.flags_fabric.client;
 
 import com.github.emmowo.flags_fabric.Flags_fabric;
+import com.github.emmowo.flags_fabric.client.config.FlagsConfig;
 import com.github.emmowo.flags_fabric.client.generator.BasicOBJParser;
 import com.github.emmowo.flags_fabric.client.render.FlagBlockEntityRenderer;
 import com.github.emmowo.flags_fabric.client.render.FlagModelRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
 import net.minecraft.util.Identifier;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Flags_fabricClient implements ClientModInitializer {
 
@@ -28,13 +29,28 @@ public class Flags_fabricClient implements ClientModInitializer {
 
     public static BasicOBJParser.OBJModel flag_placed;
 
+    public static File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("flags_config.txt").toFile();
+
+
 
     @Override
     public void onInitializeClient() {
 
+
         HandledScreens.register(Flags_fabric.SELECTOR_SCREEN_TYPE,FlagSelectScreen::new);
 
         SpecialModelTypes.ID_MAPPER.put(Flags_fabric.HELD_FLAG_ID, FlagModelRenderer.Unbaked.CODEC);
+
+        if(!CONFIG.exists()){
+            try {
+                CONFIG.createNewFile();
+                FlagsConfig.writeConfig();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            FlagsConfig.readConfig();
+        }
 
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
 

@@ -1,20 +1,56 @@
 package com.github.emmowo.flags_fabric.client;
 
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
+import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.util.Identifier;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FlagsGlobals {
 
-    enum PrideOverrideState{
+    public static enum PrideOverrideState{
         PLAYERS_WITHOUT_CAPES,
         PLAYERS_WITH_CAPES,
         ALL_PLAYERS,
-        MIGRATOR_CAPES,
-        MIGRATOR_AND_PLAYERS_WITHOUT_CAPES,
+        DISABLED,
+        //MIGRATOR_CAPES,
+        //MIGRATOR_AND_PLAYERS_WITHOUT_CAPES,
     }
 
-    public static boolean PRIDE_OVERRIDE = true;
+
+    public static String PRIDE_OVERRIDE_STATE = PrideOverrideState.DISABLED.name();
+
+    public static boolean shouldOverrideForState(PlayerEntityRenderState state){
+
+        if(PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.ALL_PLAYERS.name())){
+            return true;
+        }
+
+        if(!state.capeVisible && (PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.PLAYERS_WITHOUT_CAPES.name())/* || PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.MIGRATOR_AND_PLAYERS_WITHOUT_CAPES)*/)){
+            return true;
+        }
+
+        if(PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.PLAYERS_WITH_CAPES.name()) && state.capeVisible){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public static boolean shouldOverrideForStateElytra(BipedEntityRenderState state){
+
+        if(PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.ALL_PLAYERS.name())){
+            return true;
+        }
+
+        if(PRIDE_OVERRIDE_STATE.equals(PrideOverrideState.PLAYERS_WITH_CAPES.name())){
+            return true;
+        }
+
+        return false;
+
+    }
 
     public static final Identifier PRIDE_CAPE = Identifier.of("flags","textures/cape/progresspride.png");
 
